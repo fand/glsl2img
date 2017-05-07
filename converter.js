@@ -13,18 +13,17 @@ class Converter {
     this.createCamera();
     this.createTarget();
     this.createRenderer();
-    this.createMaterial();
-
-    // Create the mesh and add it to the scene
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const plane = new THREE.Mesh(geometry, this.material);
-    this.scene.add(plane);
+    this.createPlane();
 
     this.png = new PNG({ width: width, height: height });
   }
 
+  get aspect () {
+    return this.width / this.height;
+  }
+
   createCamera () {
-    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    this.camera = new THREE.OrthographicCamera(-this.aspect, this.aspect, 1, -1, 0.1, 10);
     this.scene.add(this.camera);
     this.camera.position.set(0, 0, 1);
     this.camera.lookAt(this.scene.position);
@@ -57,7 +56,7 @@ class Converter {
     });
   }
 
-  createMaterial () {
+  createPlane () {
     const DEFAULT_VERTEX_SHADER = `
     void main() {
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -78,11 +77,15 @@ class Converter {
       resolution: { type: 'v2', value: new THREE.Vector2(this.width, this.height) },
     };
 
-    this.material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
       vertexShader: DEFAULT_VERTEX_SHADER,
       fragmentShader: DEFAULT_FRAGMENT_SHADER,
       uniforms: DEFAULT_UNIFORMS,
     });
+
+    const geometry = new THREE.PlaneGeometry(2 * this.aspect, 2);
+    const plane = new THREE.Mesh(geometry, material);
+    this.scene.add(plane);
   }
 
   render (path = 'out.png') {
