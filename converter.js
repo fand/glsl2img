@@ -65,14 +65,16 @@ class Converter {
     `;
     const DEFAULT_FRAGMENT_SHADER = `
     uniform vec2 resolution;
+    uniform float time;
     void main() {
       vec2 pos = gl_FragCoord.xy / resolution.xy;
-      float d = distance(pos, vec2(0.5));
+      float d = distance(pos, vec2(0.5)) + sin(time) * 0.1;
       float c = 1.0 - smoothstep(0.5, 0.501, d);
       gl_FragColor = vec4(0.0, c, c, 1.0);
     }
     `;
     const DEFAULT_UNIFORMS = {
+      time: { type: 'f', value: 0.0 },
       resolution: { type: 'v2', value: new THREE.Vector2(this.width, this.height) },
     };
 
