@@ -4,14 +4,20 @@
   "version": "0.0.0",
   "author": "fand <fand@gmork.in>",
   "bin": {
+    "glsl2gif": "bin/glsl2gif.js",
     "glsl2png": "bin/glsl2png.js"
   },
   "bugs": "https://github.com/fand/glsl2img/issues",
   "dependencies": {
+    "canvas": "^1.6.5",
+    "gifencoder": "^1.0.6",
     "gl": "3.0.6",
     "meow": "^3.7.0",
+    "png-file-stream": "^1.0.0",
     "pngjs": "^3.2.0",
-    "three": "^0.85.2"
+    "rimraf": "^2.6.1",
+    "three": "^0.85.2",
+    "tmp": "^0.0.31"
   },
   "homepage": "https://github.com/fand/glsl2img",
   "keywords": [

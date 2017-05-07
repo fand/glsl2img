@@ -123,6 +123,11 @@ class Converter {
     stream.on('close', () => {
       console.log(`Image written: ${path}`);
     });
+
+    return new Promise((resolve, reject) => {
+      stream.on('close', () => resolve(path));
+      stream.on('errror', e => reject(e));
+    });
   }
 }
 
