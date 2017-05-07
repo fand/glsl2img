@@ -3,12 +3,6 @@
 CLI tool to render fragment shaders into PNG images.  
 Thanks to https://gist.github.com/bsergean/6780d7cc0cabb1b4d6c8.
 
-## Features
-
-- [x] `glsl2png` command
-- [ ] `glsl2gif` command
-- [ ] Set uniforms via options
-
 ## Install
 
 ```
@@ -16,6 +10,11 @@ npm install -g glsl2img
 ```
 
 ## Usage
+
+This package includes 2 CLI commands: `glsl2png` and `glsl2gif`.
+
+
+### glsl2png
 
 `glsl2png -h` shows the help:
 
@@ -32,7 +31,7 @@ npm install -g glsl2img
     $ glsl2png foo.frag -s 720x540 -o image.png
 ```
 
-## Examples
+### Examples
 
 Assume we have `metaball.frag` like this:
 
@@ -65,6 +64,30 @@ We can also specify `time` value via `-t` option.
 Here is the result of `glsl2png metaball.frag -o out2.png -t 10`.
 
 ![out2](https://cloud.githubusercontent.com/assets/1403842/25777406/30301ef8-3317-11e7-8f76-af0f90154951.png)
+
+### glsl2gif
+
+`glsl2gif -h` shows the help:
+
+```
+  Usage
+  $ glsl2gif <input>
+
+  Options
+    --out, -o     Output file name. Default: out.gif
+    --rate, -r    Frames per second. Default: 15
+    --length, -l  The length of GIF animation. Default: 1 (second)
+    --size, -s    Specify image size in wxh format. Default: 600x600
+
+  Examples
+    $ glsl2gif foo.frag -s 720x540 -o image.gif
+```
+
+### Examples
+
+`glsl2gif metaball.frag -r 30 -l 3.0` gives following image.
+
+![out.gif](https://cloud.githubusercontent.com/assets/1403842/25780683/218b9dfa-3367-11e7-85d6-6bd78d44bcd5.gif)
 
 ## LICENSE
 
