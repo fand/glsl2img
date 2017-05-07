@@ -4,14 +4,32 @@ const PNG = require('pngjs').PNG;
 const gl = require("gl")();
 const fs = require('fs');
 
+const DEFAULT_VERTEX_SHADER = `
+void main() {
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+const DEFAULT_FRAGMENT_SHADER = `
+uniform vec2 resolution;
+uniform float time;
+void main() {
+  vec2 pos = gl_FragCoord.xy / resolution.xy;
+  float d = distance(pos, vec2(0.5)) + sin(time) * 0.1;
+  float c = 1.0 - smoothstep(0.5, 0.501, d);
+  gl_FragColor = vec4(0.0, c, c, 1.0);
+}
+`;
+
 class Converter {
-  constructor (width = 600, height = 400) {
+  constructor (width = 600, height = 400, fsPath, time) {
     this.width = width;
     this.height = height;
+    this.time = time;
 
     this.scene = new THREE.Scene();
     this.createCamera();
     this.createTarget();
+    this.fragmentShader = fs.readFileSync(fsPath, 'utf8');
     this.createRenderer();
     this.createPlane();
 
@@ -57,29 +75,15 @@ class Converter {
   }
 
   createPlane () {
-    const DEFAULT_VERTEX_SHADER = `
-    void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-    `;
-    const DEFAULT_FRAGMENT_SHADER = `
-    uniform vec2 resolution;
-    uniform float time;
-    void main() {
-      vec2 pos = gl_FragCoord.xy / resolution.xy;
-      float d = distance(pos, vec2(0.5)) + sin(time) * 0.1;
-      float c = 1.0 - smoothstep(0.5, 0.501, d);
-      gl_FragColor = vec4(0.0, c, c, 1.0);
-    }
-    `;
     const DEFAULT_UNIFORMS = {
-      time: { type: 'f', value: 0.0 },
+      time: { type: 'f', value: this.time || 0.0 },
       resolution: { type: 'v2', value: new THREE.Vector2(this.width, this.height) },
+      mouse: { type: 'v2', value: new THREE.Vector2(this.width * 0.5, this.height * 0.5) },
     };
 
     const material = new THREE.ShaderMaterial({
       vertexShader: DEFAULT_VERTEX_SHADER,
-      fragmentShader: DEFAULT_FRAGMENT_SHADER,
+      fragmentShader: this.fragmentShader || DEFAULT_VERTEX_SHADER,
       uniforms: DEFAULT_UNIFORMS,
     });
 
