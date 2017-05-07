@@ -16,21 +16,17 @@ class Converter {
     this.createMaterial();
 
     // Create the mesh and add it to the scene
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const cube = new THREE.Mesh(geometry, this.material);
-    this.scene.add(cube);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const plane = new THREE.Mesh(geometry, this.material);
+    this.scene.add(plane);
 
     this.png = new PNG({ width: width, height: height });
   }
 
   createCamera () {
-    const VIEW_ANGLE = 45;
-    const NEAR = 0.1;
-    const FAR  = 100;
-
-    this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, this.width / this.height, NEAR, FAR);
+    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     this.scene.add(this.camera);
-    this.camera.position.set(0, 2, 2);
+    this.camera.position.set(0, 0, 1);
     this.camera.lookAt(this.scene.position);
   }
 
@@ -64,17 +60,20 @@ class Converter {
   createMaterial () {
     const DEFAULT_VERTEX_SHADER = `
     void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
     `;
     const DEFAULT_FRAGMENT_SHADER = `
-    uniform vec4 solidColor;
+    uniform vec2 resolution;
     void main() {
-      gl_FragColor = solidColor;
+      vec2 pos = gl_FragCoord.xy / resolution.xy;
+      float d = distance(pos, vec2(0.5));
+      float c = 1.0 - smoothstep(0.5, 0.501, d);
+      gl_FragColor = vec4(0.0, c, c, 1.0);
     }
     `;
     const DEFAULT_UNIFORMS = {
-      solidColor: { type: 'v4', value: new THREE.Vector4(0.0, 1.0, 1.0, 1.0) },
+      resolution: { type: 'v2', value: new THREE.Vector2(this.width, this.height) },
     };
 
     this.material = new THREE.ShaderMaterial({
