@@ -38,4 +38,5 @@ test('glsl2gif', t => {
   testDiff([cd('input.frag'), '-o', cd('out_size.gif'), '-s', '123x456'], cd('out_size.gif'), 123, 456, 1, 15);
   testDiff([cd('input.frag'), '-o', cd('out_length.gif'), '-l', '2'], cd('out_length.gif'), 600, 600, 2, 15);
   testDiff([cd('input.frag'), '-o', cd('out_rate.gif'), '-r', '20'], cd('out_rate.gif'), 600, 600, 1, 20);
+  testDiff([cd('uniform.frag'), '-o', cd('out_uniform.gif'), '-u', '{"color": {"type": "f3", "value": [0, 1, 1]}}'], cd('out_uniform.gif'), 600, 600, 1, 15);
 });
