@@ -1321,6 +1321,10 @@ ghutils@~3.2.0:
     jsonist "~1.3.0"
     xtend "~4.0.1"
 
+gif-info@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gif-info/-/gif-info-1.0.1.tgz#003765fc0c4c65a8de64d5568c1e8ead309d09dc"
+
 gifencoder@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/gifencoder/-/gifencoder-1.0.6.tgz#a3cbf6ffae172f6feb84fdd9e0e0de663803630c"
