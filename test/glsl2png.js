@@ -10,18 +10,18 @@ const cd = name => path.resolve(__dirname, name);
 
 test('glsl2png', t => {
   const testDiff = (args, filepath) => {
-    const basename = path.basename(filepath)
+    const basename = path.basename(filepath);
 
     execFileSync(cd('../bin/glsl2png.js'), args);
 
     const actual = PNG.sync.read(fs.readFileSync(filepath));
     const expected = PNG.sync.read(fs.readFileSync(cd(`fixtures/${basename}`)));
-    const numDiffPixels = pixelmatch(actual, expected, actual.width, actual.height, {threshold: 0.1});
+    const numDiffPixels = pixelmatch(actual, expected, actual.width, actual.height, { threshold: 0.1 });
 
     t.is(numDiffPixels, 0);
 
     rimraf.sync(filepath);
-  }
+  };
 
   testDiff([cd('input.frag')], cd('../out.png'));
   testDiff([cd('input.frag'), '-o', cd('out_path.png')], cd('out_path.png'));

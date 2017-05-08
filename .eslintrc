@@ -1,0 +1,10 @@
+{
+    "extends": "xo",
+    "rules": {
+        "indent": ["error", 2],
+        "space-before-function-paren": ["error", "always"],
+        "comma-dangle": ["error", "always-multiline"],
+        "object-curly-spacing": ["error", "always"],
+        "no-mixed-operators": 0,
+    },
+}

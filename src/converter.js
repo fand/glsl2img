@@ -1,7 +1,7 @@
 // Copied from https://gist.github.com/bsergean/6780d7cc0cabb1b4d6c8
 const THREE = require('three');
 const PNG = require('pngjs').PNG;
-const gl = require("gl")();
+const gl = require('gl')();
 const fs = require('fs');
 
 const DEFAULT_VERTEX_SHADER = `
@@ -61,16 +61,14 @@ class Converter {
   }
 
   createRenderer () {
-    // mock object, not used in our test case, might be problematic for some workflow
-    const canvas = {
-      getContext: () => gl,
-    };
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       width: 0, // The width / height we set here doesn't matter
       height: 0,
-      canvas: canvas,
-      context: gl, // headless-gl context
+      context: gl, // Mock context with headless-gl
+      canvas: {
+        getContext: () => gl,
+      },
     });
   }
 
@@ -83,7 +81,7 @@ class Converter {
 
     const material = new THREE.ShaderMaterial({
       vertexShader: DEFAULT_VERTEX_SHADER,
-      fragmentShader: this.fragmentShader || DEFAULT_VERTEX_SHADER,
+      fragmentShader: this.fragmentShader || DEFAULT_FRAGMENT_SHADER,
       uniforms: DEFAULT_UNIFORMS,
     });
 
@@ -99,7 +97,7 @@ class Converter {
     const pixels = new Uint8Array(4 * this.width * this.height);
     ctx.readPixels(0, 0, this.width, this.height, ctx.RGBA, ctx.UNSIGNED_BYTE, pixels);
 
-    // lines are vertically flipped in the FBO / need to unflip them
+    // Lines are vertically flipped in the FBO / need to unflip them
     for (let j = 0; j < this.height; j++) {
       for (let i = 0; i < this.width; i++) {
         const k = j * this.width + i;

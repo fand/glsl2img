@@ -19,6 +19,15 @@
     "three": "^0.85.2",
     "tmp": "^0.0.31"
   },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "coveralls": "^2.13.1",
+    "eslint": "^3.19.0",
+    "eslint-config-xo": "^0.18.1",
+    "gif-info": "^1.0.1",
+    "nyc": "^10.3.2",
+    "pixelmatch": "^4.0.2"
+  },
   "homepage": "https://github.com/fand/glsl2img",
   "keywords": [
     "cli",
@@ -29,13 +38,17 @@
   ],
   "license": "MIT",
   "main": "src/index.js",
+  "nyc": {
+    "include": [
+      "src/",
+      "bin/"
+    ]
+  },
   "repository": "https://github.com/fand/glsl2img",
   "scripts": {
-    "test": "ava test"
-  },
-  "devDependencies": {
-    "ava": "^0.19.1",
-    "gif-info": "^1.0.1",
-    "pixelmatch": "^4.0.2"
+    "ci": "npm run lint && npm run test",
+    "lint": "eslint src test",
+    "prepublishOnly": "npm test",
+    "test": "nyc ava test"
   }
 }

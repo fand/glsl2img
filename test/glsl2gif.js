@@ -7,20 +7,21 @@ import gifInfo from 'gif-info';
 
 const cd = name => path.resolve(__dirname, name);
 
-const buf2abuf = (buffer) => {
+const buf2abuf = buffer => {
   const ab = new ArrayBuffer(buffer.length);
   const view = new Uint8Array(ab);
   for (let i = 0; i < buffer.length; ++i) {
     view[i] = buffer[i];
   }
   return ab;
-}
+};
 
-const gif2info = (filepath) => {
+const gif2info = filepath => {
   return gifInfo(buf2abuf(fs.readFileSync(filepath)));
-}
+};
 
 test('glsl2gif', t => {
+  // eslint-disable-next-line max-params
   const testDiff = (args, filepath, width, height, length, rate) => {
     execFileSync(cd('../bin/glsl2gif.js'), args);
     const info = gif2info(filepath);

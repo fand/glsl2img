@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const meow = require('meow');
 const fs = require('fs');
-const os = require('os');
 const GIFEncoder = require('gifencoder');
 const pngFileStream = require('png-file-stream');
 
@@ -9,9 +8,11 @@ const Converter = require('../src/converter');
 
 // Utils
 const pad5 = x => `00000${x}`.substr(-5);
-const range = (n) => {
+const range = n => {
   let arr = [];
-  for (let i = 0; i < n; i++) { arr.push(i); }
+  for (let i = 0; i < n; i++) {
+    arr.push(i);
+  }
   return arr;
 };
 
@@ -45,7 +46,7 @@ const out = cli.flags.out || 'out.gif';
 const rate = cli.flags.rate || 15;
 const length = cli.flags.length || 1.0;
 const size = cli.flags.size || '600x600';
-const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600]
+const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 
 const frames = rate * length;
 const delay = 1.0 / rate;

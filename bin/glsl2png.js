@@ -28,7 +28,7 @@ if (!file) {
 
 const out = cli.flags.out || 'out.png';
 const size = cli.flags.size || '600x600';
-const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600]
+const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 const time = cli.flags.time || 0;
 
 const c = new Converter(width, height, file, time);
