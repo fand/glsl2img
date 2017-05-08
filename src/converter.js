@@ -21,10 +21,18 @@ void main() {
 `;
 
 class Converter {
-  constructor (width = 600, height = 400, fsPath, time) {
+  // eslint-disable-next-line max-params
+  constructor (width = 600, height = 400, fsPath, time, uniform) {
     this.width = width;
     this.height = height;
     this.time = time;
+    this.uniform = {};
+
+    try {
+      this.uniform = JSON.parse(uniform || '{}');
+    } catch (e) {
+      console.error('Failed to parse uniform option.');
+    }
 
     this.scene = new THREE.Scene();
     this.createCamera();
@@ -82,7 +90,7 @@ class Converter {
     const material = new THREE.ShaderMaterial({
       vertexShader: DEFAULT_VERTEX_SHADER,
       fragmentShader: this.fragmentShader || DEFAULT_FRAGMENT_SHADER,
-      uniforms: DEFAULT_UNIFORMS,
+      uniforms: Object.assign(DEFAULT_UNIFORMS, this.uniform),
     });
 
     const geometry = new THREE.PlaneGeometry(2 * this.aspect, 2);

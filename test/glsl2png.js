@@ -27,4 +27,5 @@ test('glsl2png', t => {
   testDiff([cd('input.frag'), '-o', cd('out_path.png')], cd('out_path.png'));
   testDiff([cd('input.frag'), '-o', cd('out_size.png'), '-s', '123x456'], cd('out_size.png'));
   testDiff([cd('input.frag'), '-o', cd('out_time.png'), '-t', '1'], cd('out_time.png'));
+  testDiff([cd('uniform.frag'), '-o', cd('out_uniform.png'), '-u', `'{"color": { "type": "f3", "value": [0,1,1] } }'`], cd('out_uniform.png'));
 });
