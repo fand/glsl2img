@@ -31,6 +31,11 @@
   "main": "src/index.js",
   "repository": "https://github.com/fand/glsl2img",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava test"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "gif-info": "^1.0.1",
+    "pixelmatch": "^4.0.2"
   }
 }
