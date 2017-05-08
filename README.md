@@ -1,5 +1,10 @@
 # glsl2img
 
+[![Build Status](http://img.shields.io/travis/fand/glsl2img.svg?style=flat-square)](https://travis-ci.org/fand/glsl2img)
+[![NPM Version](https://img.shields.io/npm/v/glsl2img.svg?style=flat-square)](https://www.npmjs.com/package/glsl2img)
+[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://fand.mit-license.org/)
+[![Coverage Status](https://img.shields.io/coveralls/fand/glsl2img.svg?style=flat-square)](https://coveralls.io/github/fand/glsl2img?branch=master)
+
 CLI tool to render fragment shaders into PNG images.  
 Thanks to https://gist.github.com/bsergean/6780d7cc0cabb1b4d6c8.
 
