@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const meow = require('meow');
-const Converter = require('../src/converter');
+const execFileSync = require('child_process').execFileSync;
 
 const cli = meow(`
   Usage
@@ -31,5 +31,4 @@ const size = cli.flags.size || '600x600';
 const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 const time = cli.flags.time || 0;
 
-const c = new Converter(width, height, file, time);
-c.render(out);
+execFileSync(`${__dirname}/wrapper.js`, [width, height, file, time, out], { stdio: 'ignore' });

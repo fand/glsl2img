@@ -3,8 +3,7 @@ const meow = require('meow');
 const fs = require('fs');
 const GIFEncoder = require('gifencoder');
 const pngFileStream = require('png-file-stream');
-
-const Converter = require('../src/converter');
+const execFileSync = require('child_process').execFileSync;
 
 // Utils
 const pad5 = x => `00000${x}`.substr(-5);
@@ -59,20 +58,17 @@ const tmpDir = tmpObj.name;
 
 // Render frames
 let time = 0;
-const files = range(frames).reduce((prev, i) => prev.then(() => {
-  const c = new Converter(width, height, file, time);
+range(frames).forEach(i => {
+  execFileSync(`${__dirname}/wrapper.js`, [width, height, file, time, `${tmpDir}/frame${pad5(i)}.png`], { stdio: 'ignore' });
   time += delay;
-  return c.render(`${tmpDir}/frame${pad5(i)}.png`);
-}), Promise.resolve());
+});
 
 // Convert PNG images to GIF
-files.then(() => {
-  const encoder = new GIFEncoder(width, height);
-  const stream = pngFileStream(`${tmpDir}/frame*.png`)
-    .pipe(encoder.createWriteStream({ repeat: 0, delay: delay * 1000, quality: 3 }))
-    .pipe(fs.createWriteStream(out));
+const encoder = new GIFEncoder(width, height);
+const stream = pngFileStream(`${tmpDir}/frame*.png`)
+  .pipe(encoder.createWriteStream({ repeat: 0, delay: delay * 1000, quality: 3 }))
+  .pipe(fs.createWriteStream(out));
 
-  stream.on('finish', () => {
-    rimraf.sync(tmpDir);
-  });
+stream.on('finish', () => {
+  rimraf.sync(tmpDir);
 });
