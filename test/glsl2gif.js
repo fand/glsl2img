@@ -1,7 +1,7 @@
 import test from 'ava';
 import path from 'path';
 import fs from 'fs';
-import { execFileSync } from 'child_process';
+import execa from 'execa';
 import rimraf from 'rimraf';
 import gifInfo from 'gif-info';
 
@@ -23,7 +23,7 @@ const gif2info = filepath => {
 test('glsl2gif', t => {
   // eslint-disable-next-line max-params
   const testDiff = (args, filepath, width, height, length, rate) => {
-    execFileSync(cd('../bin/glsl2gif.js'), args);
+    execa.sync(cd('../bin/glsl2gif.js'), args);
     const info = gif2info(filepath);
     rimraf.sync(filepath);
 

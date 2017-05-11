@@ -1,7 +1,7 @@
 import test from 'ava';
 import path from 'path';
 import fs from 'fs';
-import { execFileSync } from 'child_process';
+import execa from 'execa';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import rimraf from 'rimraf';
@@ -12,7 +12,7 @@ test('glsl2png', t => {
   const testDiff = (args, filepath) => {
     const basename = path.basename(filepath);
 
-    execFileSync(cd('../bin/glsl2png.js'), args);
+    execa.sync(cd('../bin/glsl2png.js'), args);
 
     const actual = PNG.sync.read(fs.readFileSync(filepath));
     const expected = PNG.sync.read(fs.readFileSync(cd(`fixtures/${basename}`)));
