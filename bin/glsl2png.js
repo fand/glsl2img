@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const meow = require('meow');
-const execFileSync = require('child_process').execFileSync;
+const execa = require('execa');
 
 const cli = meow(`
   Usage
@@ -35,7 +35,7 @@ const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 const time = cli.flags.time || 0;
 const uniform = cli.flags.uniform || '{}';
 
-execFileSync(
+execa.sync(
   `${__dirname}/wrapper.js`,
   [width, height, file, time, uniform, out],
   { stdio: cli.flags.verbose ? 'inherit' : 'ignore' }

@@ -1,0 +1,15 @@
+install:
+  - ps: Install-Product node LTS $env:PLATFORM
+  - cinst gtk-runtime python2 libjpeg-turbo unzip
+  - ps: Invoke-WebRequest http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip -OutFile C:\GTK.zip
+  - ps: unzip C:\GTK.zip -d C:\GTK
+  - npm config set msvs_version 2015 --global
+  - npm install -g node-gyp
+  - npm install
+test_script:
+  - node --version
+  - npm --version
+  - npm test
+build: off
+platform:
+  - x64

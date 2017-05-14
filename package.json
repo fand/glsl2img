@@ -10,6 +10,7 @@
   "bugs": "https://github.com/fand/glsl2img/issues",
   "dependencies": {
     "canvas": "^1.6.5",
+    "execa": "^0.6.3",
     "gifencoder": "^1.0.6",
     "gl": "3.0.6",
     "meow": "^3.7.0",

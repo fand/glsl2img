@@ -3,7 +3,7 @@ const meow = require('meow');
 const fs = require('fs');
 const GIFEncoder = require('gifencoder');
 const pngFileStream = require('png-file-stream');
-const execFileSync = require('child_process').execFileSync;
+const execa = require('execa');
 
 // Utils
 const pad5 = x => `00000${x}`.substr(-5);
@@ -63,7 +63,7 @@ const tmpDir = tmpObj.name;
 // Render frames
 let time = 0;
 range(frames).forEach(i => {
-  execFileSync(
+  execa.sync(
     `${__dirname}/wrapper.js`,
     [width, height, file, time, uniform, `${tmpDir}/frame${pad5(i)}.png`],
     { stdio: cli.flags.verbose ? 'inherit' : 'ignore' }
