@@ -89,19 +89,10 @@ class Converter {
     );
 
     // Create a target for backBuffer
-    this.targets = [
-      new THREE.WebGLRenderTarget(
-        this.width, this.height,
-        // 0, 0,
-        { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }
-      ),
-      new THREE.WebGLRenderTarget(
-        this.width, this.height,
-        // 0, 0,
-        { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }
-      ),
-    ];
-    // this.targets.forEach(t => t.setSize(width / this.ratio, height / this.ratio));
+    this.bufferTarget = new THREE.WebGLRenderTarget(
+      this.width, this.height,
+      { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }
+    );
   }
 
   createRenderer () {
@@ -174,7 +165,7 @@ class Converter {
 
     // Prepare backBuffer for 0th frame.
     this.uniforms.time.value -= delay;
-    this.renderer.render(this.scene, this.camera, this.targets[0], true);
+    this.renderer.render(this.scene, this.camera, this.bufferTarget, true);
 
     const frames = this.rate * length;
     const paths = length === 0 ? [path] : range(frames).map(i => `${path}/frame${pad5(i)}.png`);
@@ -182,7 +173,7 @@ class Converter {
     return paths.reduce((prev, p) => prev.then(() => {
       // Using DataTexture instead of passing target.texture to uniforms directly
       // because it didn't work in headless-gl...
-      this.renderer.render(this.scene, this.camera, this.targets[0], true);
+      this.renderer.render(this.scene, this.camera, this.bufferTarget, true);
       const backBuffer = this.getPixels();
       const rampTex = new THREE.DataTexture(backBuffer, this.width, this.height, THREE.RGBAFormat);
       rampTex.needsUpdate = true;
