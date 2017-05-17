@@ -17,6 +17,7 @@ const cli = meow(`
 `, {
   alias: {
     o: 'out',
+    r: 'rate',
     s: 'size',
     t: 'time',
     u: 'uniform',
@@ -33,10 +34,11 @@ const out = cli.flags.out || 'out.png';
 const size = cli.flags.size || '600x600';
 const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 const time = cli.flags.time || 0;
+const rate = cli.flags.rate || 15;
 const uniform = cli.flags.uniform || '{}';
 
 execa.sync(
   `${__dirname}/wrapper.js`,
-  [width, height, file, time, uniform, out],
+  [width, height, file, time, rate, uniform, 0, out],
   { stdio: cli.flags.verbose ? 'inherit' : 'ignore' }
 );

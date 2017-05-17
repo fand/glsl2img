@@ -6,5 +6,6 @@
         "comma-dangle": ["error", "always-multiline"],
         "object-curly-spacing": ["error", "always"],
         "no-mixed-operators": 0,
+        "no-implicit-coercion": 0,
     },
 }

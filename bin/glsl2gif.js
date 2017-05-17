@@ -5,16 +5,6 @@ const GIFEncoder = require('gifencoder');
 const pngFileStream = require('png-file-stream');
 const execa = require('execa');
 
-// Utils
-const pad5 = x => `00000${x}`.substr(-5);
-const range = n => {
-  let arr = [];
-  for (let i = 0; i < n; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
-
 const cli = meow(`
   Usage
   $ glsl2gif <input>
@@ -51,7 +41,6 @@ const size = cli.flags.size || '600x600';
 const [width, height] = size.match(/^\d+x\d+$/) ? size.split('x') : [600, 600];
 const uniform = cli.flags.uniform || '{}';
 
-const frames = rate * length;
 const delay = 1.0 / rate;
 
 // Create tmp directory
@@ -62,14 +51,11 @@ const tmpDir = tmpObj.name;
 
 // Render frames
 let time = 0;
-range(frames).forEach(i => {
-  execa.sync(
-    `${__dirname}/wrapper.js`,
-    [width, height, file, time, uniform, `${tmpDir}/frame${pad5(i)}.png`],
-    { stdio: cli.flags.verbose ? 'inherit' : 'ignore' }
-  );
-  time += delay;
-});
+execa.sync(
+  `${__dirname}/wrapper.js`,
+  [width, height, file, time, rate, uniform, length, tmpDir],
+  { stdio: cli.flags.verbose ? 'inherit' : 'ignore' }
+);
 
 // Convert PNG images to GIF
 const encoder = new GIFEncoder(width, height);
