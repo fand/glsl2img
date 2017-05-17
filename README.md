@@ -94,6 +94,17 @@ Here is the result of `glsl2png metaball.frag -o out2.png -t 10`.
 
 ![out.gif](https://cloud.githubusercontent.com/assets/1403842/25780683/218b9dfa-3367-11e7-85d6-6bd78d44bcd5.gif)
 
+## Uniforms
+
+[GLSL Sandbox](http://glslsandbox.com/) style `uniform` variables are available in fragment shaders.
+
+```glsl
+uniform float time;            // --time or the elapsed time from the first frame. Default: 0
+uniform vec2 mouse;            // Always vec2(0) because there is no mouse in CLI
+uniform vec2 resolution;       // Resolution of output image. Default: vec2(600.);
+uniform sampler2D backBuffer;  // Rendered output in previous frame
+```
+
 ## LICENSE
 
 MIT
